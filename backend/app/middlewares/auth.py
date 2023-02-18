@@ -4,6 +4,7 @@ from app.database import database, users
 from app.database.models import User
 
 async def verifyToken(authorization: str = Header(), db: Session = Depends(database.get_db)):
+
     if not authorization: 
         raise HTTPException(status_code=400, detail='Authorization not provided')
     
@@ -21,5 +22,6 @@ async def verifyToken(authorization: str = Header(), db: Session = Depends(datab
 async def requireAdmin(user: User = Depends(verifyToken)):
     if user.role != 'admin': 
         raise HTTPException(status_code=400, detail='Role \'admin\' required')
+
     
     return user

@@ -2,16 +2,32 @@ import { createContext, useContext, useReducer } from "react";
 import axios from 'axios'
 
 import authReducer from "../reducers/authReducer";
-import { error, pending, storeUser } from "../reducers/actions";
+import { pending, removeUser, responseError, saveUser } from "../reducers/actions";
+import { saveAuth, deleteAuth, getAuth } from "../utils/storage";
 import { useNavigate } from "react-router-dom";
 
-const AuthContext = createContext({})
+const AuthContext = createContext({
+    state: {
+        status: 'none',
+        error: null,
+        user: null
+    },
+    login: (data) => {},
+    register: (data) => {},
+    logout: () => {},
+})
 
 export const useAuthContext = () => useContext(AuthContext)
 
 export const AuthContextProvider = ({ children }) => {
 
-    const [ state, dispatch ] = useReducer(authReducer, { user: null })
+    const initialState = {
+        status: 'none',
+        error: null,
+        user: getAuth()?.user,
+    }
+
+    const [ state, dispatch ] = useReducer(authReducer, initialState)
 
     const navigate = useNavigate()
 
@@ -21,28 +37,38 @@ export const AuthContextProvider = ({ children }) => {
 
         axios.post('http://localhost:8000/api/auth/login', data)
             .then(res => {
-                dispatch(storeUser(res.user))
+                dispatch(saveUser(res.data.user))
+                saveAuth(res.data)
                 navigate('/')
             })
             .catch(err => {
-                console.log(err);
-                dispatch(error(err.response.data.detail))
+                dispatch(responseError(err))
             })
     }
 
     const register = async (data) => {
+
+        dispatch(pending())
+
         axios.post('http://localhost:8000/api/auth/register', data)
             .then(res => {
-                dispatch(storeUser(res.user))
+                dispatch(saveUser(res.data.user))
+                saveAuth(res.data)
                 navigate('/')
             })
             .catch(err => {
-                dispatch(error(err.response.data.detail))
+                dispatch(responseError(err))
             })
     }
 
+    const logout = () => {
+        deleteAuth()
+        dispatch(removeUser())
+        navigate('/login')
+    }
+
     return (
-        <AuthContext.Provider value={{ state, login, register }}>
+        <AuthContext.Provider value={{ state, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     )

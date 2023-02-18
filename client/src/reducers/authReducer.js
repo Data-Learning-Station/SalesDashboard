@@ -1,10 +1,10 @@
 const authReducer = (state, action) => {
     switch(action.type) {
-        case "STORE_USER": {
+        case "SAVE_USER": {
             return {
                 status: 'success',
                 error: null,
-                data: action.payload
+                user: action.payload
             }
         }
         case "REMOVE_USER": {
@@ -26,6 +26,12 @@ const authReducer = (state, action) => {
                 status: 'error',
                 error: action.payload,
                 user: null
+            }
+        }
+        default: {
+            console.warn('Unknown action ' + action.type)
+            return {
+                ...state
             }
         }
     }

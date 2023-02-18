@@ -1,7 +1,22 @@
-export const storeUser = (user) => {
+export const saveUser = (user) => {
     return {
-        type: "STORE_USER",
+        type: "SAVE_USER",
         payload: user
+    }
+}
+
+export const removeUser = () => {
+    return {
+        type: "REMOVE_USER"
+    }
+}
+
+export const responseError = (error) => {
+    const message = error.response?.data?.detail ?? error.message
+
+    return {
+        type: "ERROR",
+        payload: typeof message == 'string' ? message : 'Some error'
     }
 }
 
@@ -18,9 +33,3 @@ export const pending = () => {
     }
 }
 
-
-export const removeUser = () => {
-    return {
-        type: "REMOVE_USER"
-    }
-}

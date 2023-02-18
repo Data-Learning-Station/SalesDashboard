@@ -12,6 +12,7 @@ router = APIRouter()
 
 @router.post('/register', status_code=200, response_model=user.AuthResponse)
 async def register(body: user.CreateUserSchema, db: Session = Depends(database.get_db)):
+    print(body)
     user = findUserByPhone(body.phone, db)
 
     if (user):

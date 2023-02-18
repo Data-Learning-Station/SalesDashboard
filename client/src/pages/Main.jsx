@@ -1,6 +1,19 @@
+import { Outlet } from "react-router-dom"
+import Navbar from "../components/Navbar"
+
+const items = [
+  {
+    name: 'Products',
+    path: '/products'
+  }
+]
+
 const Main = () => {
   return (
-    <h1> Hello World </h1>
+    <div className="w-screen h-screen bg-slate-100">
+      <Navbar items={items} title="Sales Dashboard"/>
+      <Outlet/>
+    </div>
   )
 }
 
