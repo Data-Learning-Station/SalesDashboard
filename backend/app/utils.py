@@ -19,7 +19,7 @@ def verify_password(password: str, hashed_password: str):
 async def saveFile(file: UploadFile):
 
     _, ext = os.path.splitext(file.filename)
-    filename = str(uuid4()) + '.' + ext
+    filename = str(uuid4()) + ext
     out_file_path = './uploads/' + filename
 
     async with aiofiles.open(out_file_path, 'wb') as out_file:

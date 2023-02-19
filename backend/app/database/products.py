@@ -1,7 +1,6 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from app.schemas.product import CreateProductSchema
 from app.database.models import Product
 
 def createProduct(name, price, path, db: Session):
@@ -32,7 +31,9 @@ def getProduct(item_id: int, db: Session):
     return product
 
 def updateProduct(id: int, name, price, path, db: Session):
+    
     product: Product = db.query(Product).filter(Product.id == id).first()
+    
     if not product:
         return None
     

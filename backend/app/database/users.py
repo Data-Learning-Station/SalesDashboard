@@ -1,21 +1,20 @@
 import hashlib
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from app import utils
 
 from app.schemas import user
 from app.database import models
-from app.database import database
+
+from app import utils
 
 def findUserByPhone(phone: str, db: Session):
     user = db.query(models.User).filter(models.User.phone == phone).first()
     return user
 
-
 def findUserByToken(token: str, db: Session):
     user = db.query(models.User).filter(models.User.token == token).first()
     return user
-
 
 def createUser(body: user.CreateUserSchema, db: Session):
     
@@ -32,7 +31,6 @@ def createUser(body: user.CreateUserSchema, db: Session):
     
     db.add(newUser)
     db.commit()
-
     db.refresh(newUser)
 
     return newUser

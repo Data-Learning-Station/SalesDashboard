@@ -3,15 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.middlewares.auth import verifyToken
+from app.database.models import User
+
 from app.routers import auth
 from app.routers import products
-from app.database.models import User
 
 app = FastAPI()
 
-origins = [
-   "*"
-]
+origins = [ "*" ]
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +23,7 @@ app.add_middleware(
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.include_router(auth.router, tags=['Auth'], prefix='/api/auth')
+
 app.include_router(products.router, tags=['Products'], prefix='/api/products')
 
 @app.get('/api/check', status_code=200)
@@ -42,4 +42,3 @@ def check(user: User = Depends(verifyToken)):
 @app.get('/api/healthchecker', status_code=200)
 def root():
     return "Success"
-

@@ -1,5 +1,6 @@
 from fastapi import Header, HTTPException, Depends
 from sqlalchemy.orm import Session
+
 from app.database import database, users
 from app.database.models import User
 
@@ -9,9 +10,6 @@ async def verifyToken(authorization: str = Header(), db: Session = Depends(datab
         raise HTTPException(status_code=400, detail='Authorization not provided')
     
     token = authorization.split(' ')[0]
-
-    print('Token: ' + token)
-
     user = users.findUserByToken(token, db)
 
     if not user:
