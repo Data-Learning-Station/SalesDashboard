@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useReducer } from "react"
 import ProductContext from "../contexts/ProductContext"
-import { pending, responseError, updateProducts, addProduct, removeProduct } from "../reducers/actions"
+import { pending, responseError, updateProducts, addProduct, removeProduct, updateProduct } from "../reducers/actions"
 import productReducer from "../reducers/productReducer"
 import { getAuth } from "../utils/storage"
 
@@ -43,6 +43,23 @@ const ProductContextProvider = ({ children }) => {
             dispatch(responseError(err))
         }
     }
+    const update = async (id, formData) => {
+
+        const auth = getAuth()
+
+        try {
+            const response = await axios.put('http://localhost:8000/api/products/' + id, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': auth.token
+                }
+            })
+            dispatch(updateProduct(id, response.data.product))
+        }
+        catch(err) {
+            dispatch(responseError(err))
+        }
+    }
 
     const remove = async (id) => {
 
@@ -62,7 +79,7 @@ const ProductContextProvider = ({ children }) => {
     }
 
     return (
-        <ProductContext.Provider value={{ state, fetch, create, remove }}>
+        <ProductContext.Provider value={{ state, fetch, create, remove, update }}>
             {children}
         </ProductContext.Provider>
     )

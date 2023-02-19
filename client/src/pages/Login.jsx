@@ -17,7 +17,7 @@ const Login = () => {
     return (
         <div className="h-screen w-screen flex flex-col justify-center items-center bg-slate-100">
             <Card>
-                <Form className="flex flex-col gap-3 w-96" onSubmit={onLogin}>
+                <Form className="flex flex-col gap-3 w-96" mode="raw" onSubmit={onLogin}>
                     <h2 className="text-2xl"> Login </h2>
                     {
                         state.error && <Alert> {state.error} </Alert>

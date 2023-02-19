@@ -1,6 +1,6 @@
 import ProductTableItem from './ProductTableItem'
 
-const ProductTable = ({ products, onDelete }) => {
+const ProductTable = ({ products, onUpdate, onDelete }) => {
     return (
         <table className='border border-slate-200 w-full'>
             <thead className='bg-slate-100'>
@@ -9,6 +9,7 @@ const ProductTable = ({ products, onDelete }) => {
                     <th className='p-2 text-start'> Name </th>
                     <th className='p-2 text-start'> Price </th>
                     <th className='p-2 text-start'> Path </th>
+                    <th className='p-2 text-start'> Actions </th>
                 </tr>
             </thead>
             <tbody>
@@ -16,9 +17,11 @@ const ProductTable = ({ products, onDelete }) => {
                     products.map(product => 
                         <ProductTableItem 
                             key={product.id} 
+                            onUpdate={onUpdate}
                             onDelete={onDelete} 
-                            product={product}/>
-                        ) 
+                            product={product}
+                        />
+                    ) 
                 }
             </tbody>
         </table>

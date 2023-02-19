@@ -9,11 +9,16 @@ import { createPortal } from 'react-dom'
 const AdminProducts = () => {
 
     const { state, fetch, remove } = useProductContext()
-    const { isShow, actions } = useProductModalContext()
+    const { modal, actions } = useProductModalContext()
+
 
     useEffect(() => {
         fetch()
     }, [])
+
+    const onUpdate = (product) => {
+        actions.update(product)    
+    }
 
     return (
         <>
@@ -24,13 +29,13 @@ const AdminProducts = () => {
                 </div>
 
                 <div className='mt-5'>
-                    <ProductTable products={state.products} onDelete={remove}/>
+                    <ProductTable products={state.products} onUpdate={onUpdate} onDelete={remove}/>
                 </div>
             </Card>
             {
-                isShow && (
+                modal.show && (
                     createPortal(
-                        <ProductModal onClose={() => actions.hide()}/>,
+                        <ProductModal target={modal.target} onClose={() => actions.hide()}/>,
                         document.getElementById('modal-root')
                     )
                 )

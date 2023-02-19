@@ -6,8 +6,6 @@ const Products = () => {
 
     const { state, fetch } = useProductContext()
 
-    console.log(state);
-
     useEffect(() => {
         fetch()
     }, [])
@@ -17,7 +15,7 @@ const Products = () => {
             <h1 className="text-2xl font-bold">Products</h1>
             <div className="grid grid-cols-3 gap-5 mt-5">
                 {
-                    state.products.map(product => <ProductItem product={product}/>)
+                    state.products.map(product => <ProductItem key={product.id} product={product}/>)
                 }
             </div>
         </div>

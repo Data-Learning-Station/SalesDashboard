@@ -1,6 +1,6 @@
 import Button from '../../../components/Button'
 
-const ProductTableItem = ({ product, onDelete }) => {
+const ProductTableItem = ({ product, onUpdate, onDelete }) => {
     return (
         <tr className='border border-slate-200'>
             <td className='p-2'> {product.id} </td>
@@ -12,8 +12,11 @@ const ProductTableItem = ({ product, onDelete }) => {
                     {product.path}
                 </a>
             </td>
-            <td>
-                <Button onClick={() => onDelete(product.id)}> Delete </Button>
+            <td >
+                <div className='flex gap-2'>
+                    <Button variant='small' onClick={() => onDelete(product.id)}> Delete </Button>
+                    <Button variant='small' onClick={() => onUpdate(product)}> Update </Button>
+                </div>
             </td>
         </tr>
     )
