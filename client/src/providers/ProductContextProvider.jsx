@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useReducer } from "react"
 import ProductContext from "../contexts/ProductContext"
-import { pending, responseError, updateProducts, updateProduct, addProduct } from "../reducers/actions"
+import { pending, responseError, updateProducts, addProduct, removeProduct } from "../reducers/actions"
 import productReducer from "../reducers/productReducer"
 import { getAuth } from "../utils/storage"
 
@@ -44,8 +44,25 @@ const ProductContextProvider = ({ children }) => {
         }
     }
 
+    const remove = async (id) => {
+
+        const auth = getAuth()
+
+        try {
+            const response = await axios.delete('http://localhost:8000/api/products/' + id, {
+                headers: {
+                    'Authorization': auth.token
+                }
+            })
+            dispatch(removeProduct(response.data.product.id))
+        }
+        catch(err) {
+            dispatch(responseError(err))
+        }
+    }
+
     return (
-        <ProductContext.Provider value={{ state, fetch, create }}>
+        <ProductContext.Provider value={{ state, fetch, create, remove }}>
             {children}
         </ProductContext.Provider>
     )

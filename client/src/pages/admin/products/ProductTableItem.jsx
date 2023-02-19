@@ -1,4 +1,6 @@
-const ProductTableItem = ({ product }) => {
+import Button from '../../../components/Button'
+
+const ProductTableItem = ({ product, onDelete }) => {
     return (
         <tr className='border border-slate-200'>
             <td className='p-2'> {product.id} </td>
@@ -9,6 +11,9 @@ const ProductTableItem = ({ product }) => {
                 <a className='text-blue-400' href={"http://localhost:8000/uploads/" + product.path}>
                     {product.path}
                 </a>
+            </td>
+            <td>
+                <Button onClick={() => onDelete(product.id)}> Delete </Button>
             </td>
         </tr>
     )

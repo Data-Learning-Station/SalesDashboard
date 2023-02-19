@@ -22,7 +22,7 @@ const productReducer = (state, action) => {
             return {
                 status: 'success',
                 error: null,
-                products: state.products.filter(product => product.id == id)
+                products: state.products.filter(product => product.id != id)
             }
         }
         case "UPDATE_PRODUCT": {

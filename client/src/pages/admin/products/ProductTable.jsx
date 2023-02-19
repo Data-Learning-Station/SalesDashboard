@@ -1,7 +1,6 @@
 import ProductTableItem from './ProductTableItem'
 
-const ProductTable = ({ products }) => {
-    console.log(products);
+const ProductTable = ({ products, onDelete }) => {
     return (
         <table className='border border-slate-200 w-full'>
             <thead className='bg-slate-100'>
@@ -14,7 +13,12 @@ const ProductTable = ({ products }) => {
             </thead>
             <tbody>
                 {
-                    products.map(product => <ProductTableItem key={product.id} product={product}/>) 
+                    products.map(product => 
+                        <ProductTableItem 
+                            key={product.id} 
+                            onDelete={onDelete} 
+                            product={product}/>
+                        ) 
                 }
             </tbody>
         </table>

@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom'
 
 const AdminProducts = () => {
 
-    const { state, fetch } = useProductContext()
+    const { state, fetch, remove } = useProductContext()
     const { isShow, actions } = useProductModalContext()
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const AdminProducts = () => {
                 </div>
 
                 <div className='mt-5'>
-                    <ProductTable products={state.products}/>
+                    <ProductTable products={state.products} onDelete={remove}/>
                 </div>
             </Card>
             {

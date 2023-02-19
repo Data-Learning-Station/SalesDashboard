@@ -9,8 +9,7 @@ import AdminProducts from './pages/admin/AdminProducts'
 import AdminSales from './pages/admin/AdminSales'
 import AuthContextProvider from './providers/AuthContextProvider'
 import ProductContextProvider from './providers/ProductContextProvider'
-import { ProductModalContextProvider } from './modals/ProductModal'
-
+import ProductModalContextProvider from './providers/ProductModalProvider'
 
 const router = createBrowserRouter([
     {
