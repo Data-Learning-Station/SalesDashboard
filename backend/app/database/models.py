@@ -16,3 +16,4 @@ class Product(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
+    path = Column(String, nullable=False)

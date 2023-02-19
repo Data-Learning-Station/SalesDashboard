@@ -1,14 +1,19 @@
 import { parseFormData } from "../utils/forms"
 
-const Form = ({ className, children, onSubmit }) => {
+const Form = ({ className, children, mode = 'form-data', onSubmit }) => {
     
     const submit = (event) => {
         event.preventDefault()
         const formData = new FormData(event.target)
-        const result = parseFormData(formData)
         
         if (onSubmit) {
-            onSubmit(result)
+            if (mode == 'form-data') {
+                onSubmit(formData)
+            }
+            else if (mode == 'raw') {
+                const raw = parseFormData(formData)
+                onSubmit(raw)
+            }
         }
     }
     

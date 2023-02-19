@@ -13,3 +13,6 @@ CREATE TABLE products (
     name VARCHAR(256),
     price INTEGER
 );
+
+ALTER TABLE products 
+ADD path VARCHAR(256);

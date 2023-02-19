@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import Settings
+from fastapi.staticfiles import StaticFiles
+
 from app.middlewares.auth import verifyToken
 from app.routers import auth
 from app.routers import products
@@ -19,6 +20,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.include_router(auth.router, tags=['Auth'], prefix='/api/auth')
 app.include_router(products.router, tags=['Products'], prefix='/api/products')

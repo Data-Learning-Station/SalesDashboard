@@ -13,6 +13,7 @@ class ProductResponse(BaseModel):
     id: int
     name: str
     price: int
+    path: str
 
 class ProductCreateResponse(BaseModel):
     product: ProductResponse

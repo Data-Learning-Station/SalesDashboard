@@ -4,7 +4,7 @@ const Sidebar = ({ items }) => {
     return (
         <div className="border w-60 bg-white border-slate-100 mt-2 p-2 flex flex-col gap-2">
             {
-                items.map(item => <Item item={item}/>)
+                items.map(item => <Item key={item.path} item={item}/>)
             }
         </div>
     )

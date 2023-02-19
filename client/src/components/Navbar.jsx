@@ -1,5 +1,4 @@
 import { useAuthContext } from "../contexts/AuthContext"
-import { getAuth } from "../utils/storage"
 import Link from "./Link"
 
 const Navbar = ({ title, items }) => {
@@ -22,7 +21,9 @@ const Navbar = ({ title, items }) => {
            {
             state.user ? (
                 <div className="flex gap-2 items-center">
-                    <span className="font-semibold"> {state.user.name} {state.user.surname} </span>
+                    <span className="font-semibold"> 
+                        {state.user.name} {state.user.surname} 
+                    </span>
                     <Link to='/logout' onClick={logout}> Logout </Link>
                 </div>
             ) : (

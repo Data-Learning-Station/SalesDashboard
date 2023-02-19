@@ -7,15 +7,19 @@ import Auth from './components/Auth'
 import Register from './pages/Register'
 import AdminProducts from './pages/admin/AdminProducts'
 import AdminSales from './pages/admin/AdminSales'
+import AuthContextProvider from './providers/AuthContextProvider'
+import ProductContextProvider from './providers/ProductContextProvider'
+import { ProductModalContextProvider } from './modals/ProductModal'
 
-import { AuthContextProvider } from './contexts/AuthContext'
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: (
             <AuthContextProvider>
-                <Main/>
+                <ProductContextProvider>
+                    <Main/>
+                </ProductContextProvider>
             </AuthContextProvider>
         ),
         children: [
@@ -53,7 +57,11 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'products',
-                        element: <AdminProducts/>
+                        element: (
+                            <ProductModalContextProvider>
+                                <AdminProducts/>
+                            </ProductModalContextProvider>
+                        )
                     },
                     {
                         path: 'sales',

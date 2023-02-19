@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-
-from app.database.products import createProduct, deleteProduct, allProducts
 
 from app.schemas import product
 from app.database import database, models, products
 
 from app.middlewares.auth import requireAdmin
+from app.utils import removeFile, saveFile
 
 router = APIRouter()
 
@@ -14,7 +13,8 @@ def _mapProduct(product: models.Product):
     return { 
         'id': product.id, 
         'name': product.name, 
-        'price': product.price 
+        'price': product.price,
+        'path': product.path 
     }
 
 @router.get('/', status_code=200, response_model=product.AllProductsResponse)
@@ -39,13 +39,22 @@ def getProduct(item_id: int, db: Session = Depends(database.get_db)):
 
 
 @router.post('/', status_code=200, response_model=product.ProductCreateResponse)
-def createProduct(body: product.CreateProductSchema, admin: models.User = Depends(requireAdmin), db: Session = Depends(database.get_db)):
+async def createProduct(
+    name: str = Form(),  
+    price: str = Form(),
+    file: UploadFile = File(),
+    admin: models.User = Depends(requireAdmin), 
+    db: Session = Depends(database.get_db)
+    ):
 
-    newProduct = products.createProduct(body, db)
+    path = await saveFile(file)
+    newProduct = products.createProduct(name, price, path, db)
 
     return {
         'product': _mapProduct(newProduct)
     }
+
+
 
 @router.delete('/{item_id}', status_code=200, response_model=product.ProductCreateResponse)
 def deleteProduct(item_id: int, admin: models.User = Depends(requireAdmin), db: Session = Depends(database.get_db)):
@@ -60,9 +69,26 @@ def deleteProduct(item_id: int, admin: models.User = Depends(requireAdmin), db: 
     }
 
 @router.put('/{item_id}', status_code=200, response_model=product.ProductCreateResponse)
-def createProduct(item_id: int, body: product.CreateProductSchema, admin: models.User = Depends(requireAdmin), db: Session = Depends(database.get_db)):
+async def updateProduct(
+    item_id: int, 
+    name: str = Form(),  
+    price: str = Form(),
+    file: UploadFile = File(), 
+    admin: models.User = Depends(requireAdmin), 
+    db: Session = Depends(database.get_db)
+    ):
 
-    newProduct = products.updateProduct(item_id, body, db)
+    oldProduct: models.Product = products.getProduct(item_id, db)
+
+    if not oldProduct: 
+        raise HTTPException(status_code=404, detail=f"Product by id {item_id} not found")
+    
+    # remove old file
+    removeFile('./uploads/' + oldProduct.path)
+
+    path = await saveFile(file)
+
+    newProduct = products.updateProduct(item_id, name, price, path, db)
 
     if not newProduct: 
         raise HTTPException(status_code=404, detail=f"Product by id {item_id} not found")

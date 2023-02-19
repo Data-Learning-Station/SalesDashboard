@@ -1,24 +1,23 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from app import utils
 
-from app.schemas import product
-from app.database import models
-from app.database import database
+from app.schemas.product import CreateProductSchema
+from app.database.models import Product
 
-def createProduct(body: product.CreateProductSchema, db: Session):
-    newProduct = models.Product()
-    newProduct.name = body.name
-    newProduct.price = body.price
+def createProduct(name, price, path, db: Session):
+    product = Product()
+    product.name = name
+    product.price = price
+    product.path = path
 
-    db.add(newProduct)
+    db.add(product)
     db.commit()
-    db.refresh(newProduct)
+    db.refresh(product)
 
-    return newProduct
+    return product
 
 def deleteProduct(item_id: int, db: Session):
-    product = db.query(models.Product).filter(models.Product.id == item_id).first()
+    product = db.query(Product).filter(Product.id == item_id).first()
 
     if not product:
         return None
@@ -29,20 +28,21 @@ def deleteProduct(item_id: int, db: Session):
 
 
 def getProduct(item_id: int, db: Session):
-    product = db.query(models.Product).filter(models.Product.id == item_id).first()
+    product = db.query(Product).filter(Product.id == item_id).first()
     return product
 
-def updateProduct(id: int, body: product.CreateProductSchema, db: Session):
-    product: models.Product = db.query(models.Product).filter(models.Product.id == id).first()
+def updateProduct(id: int, name, price, path, db: Session):
+    product: Product = db.query(Product).filter(Product.id == id).first()
     if not product:
         return None
     
-    product.name = body.name
-    product.price = body.price
+    product.name = name
+    product.price = price
+    product.path = path
 
     db.commit()
 
     return product
 
 def allProducts(db: Session):
-    return db.query(models.Product).all()
+    return db.query(Product).all()

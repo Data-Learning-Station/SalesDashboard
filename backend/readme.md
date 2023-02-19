@@ -82,3 +82,9 @@ pip3 install alembic
 alembic init alembic
 ```
 
+Install multipart and aiofiles for file upload
+
+```
+pip3 install python-multipart
+pip3 install aiofiles
+```
