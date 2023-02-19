@@ -1,6 +1,7 @@
 const productReducer = (state, action) => {
 
     switch(action.type) {
+        
         case "UPDATE_PRODUCTS": {
             return {
                 status: 'success',
@@ -8,6 +9,7 @@ const productReducer = (state, action) => {
                 products: action.payload
             }
         }
+        
         case "ADD_PRODUCT": {
             return {
                 status: 'success',
@@ -15,6 +17,7 @@ const productReducer = (state, action) => {
                 products: [...state.products, action.payload]
             }
         }
+        
         case "REMOVE_PRODUCT": {
             
             const { id } = action.payload
@@ -25,6 +28,7 @@ const productReducer = (state, action) => {
                 products: state.products.filter(product => product.id != id)
             }
         }
+        
         case "UPDATE_PRODUCT": {
             
             const payload = action.payload 
@@ -35,6 +39,7 @@ const productReducer = (state, action) => {
                 products: state.products.map(product => product.id == payload.id ? payload.product : product)
             }
         }
+        
         case "PENDING": {
             return {
                 status: 'pending',
@@ -42,6 +47,7 @@ const productReducer = (state, action) => {
                 products: []
             }
         }
+        
         case "ERROR": {
             return {
                 status: 'error',
@@ -49,6 +55,7 @@ const productReducer = (state, action) => {
                 products: []
             }
         }
+        
         default: {
             console.warn('Unknown action ' + action.type)
             return {

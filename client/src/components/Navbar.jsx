@@ -19,19 +19,19 @@ const Navbar = ({ title, items }) => {
             </ul>
 
            {
-            state.user ? (
-                <div className="flex gap-2 items-center">
-                    <span className="font-semibold"> 
-                        {state.user.name} {state.user.surname} 
-                    </span>
-                    <Link to='/logout' onClick={logout}> Logout </Link>
-                </div>
-            ) : (
-                <div className="flex gap-2 items-center ">
-                    <Link to='/login'> Login </Link>
-                    <Link to='/register'> Register </Link>
-                </div>
-            )
+                state.user ? (
+                    <div className="flex gap-2 items-center">
+                        <span className="font-semibold"> 
+                            {state.user.name} {state.user.surname} 
+                        </span>
+                        <Link to='/logout' onClick={logout}> Logout </Link>
+                    </div>
+                ) : (
+                    <div className="flex gap-2 items-center ">
+                        <Link to='/login'> Login </Link>
+                        <Link to='/register'> Register </Link>
+                    </div>
+                )
            }
         </div>
     )

@@ -1,4 +1,4 @@
-import { Outlet, Navigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { getAuth } from "../utils/storage"
 
 const Auth = ({ to = '/login', required, children }) => {
